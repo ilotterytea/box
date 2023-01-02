@@ -12,7 +12,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class BoxProperties {
     /** Character pool. */
     @Value("${box.chars}")
-    private final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+    private String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
+    public void setChars(String chars) { this.chars = chars; }
     public String getChars() { return chars; }
 }
