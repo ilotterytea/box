@@ -4,20 +4,22 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import kz.ilotterytea.box.BoxProperties;
 import kz.ilotterytea.box.models.FileDataModel;
+import kz.ilotterytea.box.models.ResponseModel;
 import kz.ilotterytea.box.utils.KeyUtils;
 import org.apache.tika.mime.MimeTypeException;
 import org.apache.tika.mime.MimeTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.nio.file.Files;
 
 /**
  * A controller for file serving: uploading, sharing, deleting.
@@ -31,6 +33,66 @@ public class FileServerController {
     @Autowired
     public FileServerController(BoxProperties properties) {
         this.properties = properties;
+    }
+
+    @GetMapping("/{id}")
+    public void serveFile(HttpServletResponse response, @PathVariable("id") String id) throws IOException {
+        File folder = new File(properties.getUploadedPath());
+        File dataFolder = new File(properties.getDataPath());
+
+        if (!folder.exists() || !dataFolder.exists()) {
+            response.setStatus(500);
+            response.setContentType("application/json");
+            response.getWriter().print(new Gson().toJson(new ResponseModel<>(
+                    500,
+                    "No folders for uploaded files and data files."
+            )));
+            return;
+        }
+
+        File data = new File(String.format("%s/%s.json", dataFolder.getAbsolutePath(), id));
+
+        if (!data.exists()) {
+            response.setStatus(404);
+            response.setContentType("application/json");
+            response.getWriter().print(new Gson().toJson(new ResponseModel<>(
+                    404,
+                    String.format("File with ID %s not found!", id)
+            )));
+            return;
+        }
+
+        FileDataModel model = null;
+
+        try {
+            FileInputStream fis = new FileInputStream(data);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            Gson gson = new GsonBuilder().create();
+
+            model = gson.fromJson(ois.readUTF(), FileDataModel.class);
+
+            ois.close();
+            fis.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        File file = new File(String.format("%s/%s%s", folder.getAbsolutePath(), model.getId(), model.getExt()));
+
+        if (!file.exists()) {
+            response.setStatus(404);
+            response.setContentType("application/json");
+            response.getWriter().print(new Gson().toJson(new ResponseModel<>(
+                    404,
+                    String.format("The file data with the ID %s is found, but the file itself - not found!!", id)
+            )));
+            return;
+        }
+
+        response.reset();
+        response.setBufferSize(4096);
+        response.setContentType(model.getMime());
+        response.getOutputStream().write(Files.readAllBytes(file.toPath()));
     }
 
     private FileDataModel processFile(MultipartFile file) {
