@@ -62,10 +62,14 @@ public class FileServerController {
             folder = new File(properties.getDataPath());
             if (!folder.exists()) folder.mkdirs();
 
-            try (Writer writer = new FileWriter(String.format("%s/%s.json", properties.getDataPath(), model.getId()))) {
-                Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                gson.toJson(model, writer);
-            }
+            FileOutputStream fos = new FileOutputStream(String.format("%s/%s%s.json", properties.getDataPath(), model.getId(), model.getExt()));
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+            oos.writeUTF(gson.toJson(model));
+
+            oos.close();
+            fos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
