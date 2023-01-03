@@ -17,6 +17,8 @@ public class BoxProperties {
     private String uploadedPath = "./uploaded";
     /** Path to the folder where the data files are to be stored. */
     private String dataPath = "./data/file_records";
+    /** The box name. */
+    private String boxName = "Box";
 
     public void setChars(String chars) { this.chars = chars; }
     public String getChars() { return chars; }
@@ -29,4 +31,7 @@ public class BoxProperties {
 
     public void setDataPath(String dataPath) { this.dataPath = dataPath; }
     public String getDataPath() { return dataPath; }
+
+    public void setBoxName(String boxName) { this.boxName = boxName; }
+    public String getBoxName() { return boxName; }
 }
