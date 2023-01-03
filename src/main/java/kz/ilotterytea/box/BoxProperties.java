@@ -15,6 +15,8 @@ public class BoxProperties {
     private int defaultIdLength = 6;
     /** Path to the folder where the uploaded files are to be stored. */
     private String uploadedPath = "./uploaded";
+    /** Path to the folder where the data files are to be stored. */
+    private String dataPath = "./data/file_records";
 
     public void setChars(String chars) { this.chars = chars; }
     public String getChars() { return chars; }
@@ -24,4 +26,7 @@ public class BoxProperties {
 
     public void setUploadedPath(String uploadedPath) { this.uploadedPath = uploadedPath; }
     public String getUploadedPath() { return uploadedPath; }
+
+    public void setDataPath(String dataPath) { this.dataPath = dataPath; }
+    public String getDataPath() { return dataPath; }
 }
