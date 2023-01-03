@@ -42,14 +42,15 @@ public class FileServerController {
             e.printStackTrace();
         }
 
-        if (!new File(properties.getUploadedPath()).exists()) {
-            new File(properties.getUploadedPath()).mkdirs();
+        File folder = new File(properties.getUploadedPath());
+        if (!folder.exists()) {
+            folder.mkdirs();
         }
 
         try {
             file.transferTo(new File(String.format(
                     "%s/%s%s",
-                    properties.getUploadedPath(),
+                    folder.getAbsolutePath(),
                     (model != null) ? model.getId() : file.getOriginalFilename(),
                     (model != null) ? model.getExt() : ""
             )));
