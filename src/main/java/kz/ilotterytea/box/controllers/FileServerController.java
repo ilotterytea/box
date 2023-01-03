@@ -1,5 +1,7 @@
 package kz.ilotterytea.box.controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import kz.ilotterytea.box.BoxProperties;
 import kz.ilotterytea.box.models.FileDataModel;
 import kz.ilotterytea.box.utils.KeyUtils;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 
 /**
  * A controller for file serving: uploading, sharing, deleting.
@@ -54,6 +58,14 @@ public class FileServerController {
                     (model != null) ? model.getId() : file.getOriginalFilename(),
                     (model != null) ? model.getExt() : ""
             )));
+
+            folder = new File(properties.getDataPath());
+            if (!folder.exists()) folder.mkdirs();
+
+            try (Writer writer = new FileWriter(String.format("%s/%s.json", properties.getDataPath(), model.getId()))) {
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                gson.toJson(model, writer);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
