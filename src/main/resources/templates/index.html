@@ -1,11 +1,55 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
     <head>
-        <meta charset="UTF-8">
-
-        <title>lol</title>
-
+        <title th:text="${title}" />
     </head>
+    <style>
+        html {
+            font-family: monospace;
+        }
 
-    <h1 th:text="${test}" />
+        section {
+            padding: 4px 10px;
+            margin: 4px;
+        }
+
+        .content {
+            padding: 0 10px;
+        }
+    </style>
+    <body>
+        <div class="container">
+            <div class="brand">
+                <h1 th:text="${title}" />
+                <h2>API USAGE</h2>
+                <hr>
+            </div>
+            <div class="content" id="web">
+                <h2>WEB</h2>
+                <section class="endpoint" id="get/">
+                    <h3>GET <a th:href="${web_url}">/web</a></h3>
+                    <p>
+                        Box client for the web browser.
+                    </p>
+                </section>
+            </div>
+            <div class="content" id="files">
+                <h2>FILES</h2>
+                <section class="endpoint" id="post/upload">
+                    <h3>POST /upload</h3>
+                    <p>
+                        Send the "multipart/form-data" form with files in "file" key.
+                        Returns a link to it and some data stored on server.
+                        <br>If the response code is 201 (CREATED), then the entire file was uploaded.
+                    </p>
+                </section>
+                <section class="endpoint" id="get/id">
+                    <h3>GET /&lt;id&gt;</h3>
+                    <p>
+                        Retrieve the file with the given ID.
+                    </p>
+                </section>
+            </div>
+        </div>
+    </body>
 </html>
