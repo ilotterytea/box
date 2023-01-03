@@ -140,7 +140,7 @@ public class FileServerController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<FileDataModel[]> handleFileUpload(@RequestParam("files") MultipartFile[] files) {
+    public ResponseEntity<FileDataModel[]> handleFileUpload(@RequestParam("file") MultipartFile[] files) {
         FileDataModel[] models = new FileDataModel[files.length];
         for (int i = 0; i < files.length; i++) {
             models[i] = processFile(files[i]);
