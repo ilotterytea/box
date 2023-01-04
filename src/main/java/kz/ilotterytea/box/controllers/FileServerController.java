@@ -127,20 +127,27 @@ public class FileServerController {
         try {
             file.transferTo(file1);
 
-            model.setSum(HashUtils.generateMD5Hash(file1));
+            if (properties.getGenerateHashSum()) {
+                model.setSum(HashUtils.generateMD5Hash(file1));
+            } else {
+                model.setSum(null);
+            }
+
             model.setGet(url + model.getId() + model.getExt());
 
-            folder = new File(properties.getDataPath());
-            if (!folder.exists()) folder.mkdirs();
+            if (properties.getGenerateDataFiles()) {
+                folder = new File(properties.getDataPath());
+                if (!folder.exists()) folder.mkdirs();
 
-            FileOutputStream fos = new FileOutputStream(String.format("%s/%s%s.json", properties.getDataPath(), model.getId(), model.getExt()));
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                FileOutputStream fos = new FileOutputStream(String.format("%s/%s%s.json", properties.getDataPath(), model.getId(), model.getExt()));
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-            oos.writeUTF(gson.toJson(model));
+                oos.writeUTF(gson.toJson(model));
 
-            oos.close();
-            fos.close();
+                oos.close();
+                fos.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

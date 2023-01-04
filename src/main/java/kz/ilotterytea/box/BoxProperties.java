@@ -31,6 +31,10 @@ public class BoxProperties {
      * @see kz.ilotterytea.box.components.CollectorComponent
      */
     private boolean useExpiredFilesCollector = true;
+    /** Generate data files of uploaded files. */
+    private boolean generateDataFiles = true;
+    /** Generate a hash summary of uploaded file. */
+    private boolean generateHashSum = true;
 
     public void setChars(String chars) { this.chars = chars; }
     public String getChars() { return chars; }
@@ -55,4 +59,10 @@ public class BoxProperties {
 
     public void setUseExpiredFilesCollector(boolean useExpiredFilesCollector) { this.useExpiredFilesCollector = useExpiredFilesCollector; }
     public boolean getUseExpiredFilesCollector() { return useExpiredFilesCollector; }
+
+    public void setGenerateDataFiles(boolean generateDataFiles) { this.generateDataFiles = generateDataFiles; }
+    public boolean getGenerateDataFiles() { return generateDataFiles; }
+
+    public void setGenerateHashSum(boolean generateHashSum) { this.generateHashSum = generateHashSum; }
+    public boolean getGenerateHashSum() { return generateHashSum; }
 }
