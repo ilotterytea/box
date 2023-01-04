@@ -19,6 +19,10 @@ public class BoxProperties {
     private String dataPath = "./data/file_records";
     /** The box name. */
     private String boxName = "Box";
+    /** Maximum time age (in milliseconds) of the file. */
+    private long maxFileAgeMs = 43_200_000L;
+    /** Interval (in milliseconds) between collection of expired files. */
+    private long collectExpiredFilesIntervalMs = 43_200_000L;
 
     public void setChars(String chars) { this.chars = chars; }
     public String getChars() { return chars; }
@@ -34,4 +38,10 @@ public class BoxProperties {
 
     public void setBoxName(String boxName) { this.boxName = boxName; }
     public String getBoxName() { return boxName; }
+
+    public void setMaxFileAgeMs(long maxFileAgeMs) { this.maxFileAgeMs = maxFileAgeMs; }
+    public long getMaxFileAgeMs() { return maxFileAgeMs; }
+
+    public void setCollectExpiredFilesIntervalMs(long collectExpiredFilesIntervalMs) { this.collectExpiredFilesIntervalMs = collectExpiredFilesIntervalMs; }
+    public long getCollectExpiredFilesIntervalMs() { return collectExpiredFilesIntervalMs; }
 }
