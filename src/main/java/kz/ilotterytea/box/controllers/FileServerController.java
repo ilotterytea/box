@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import kz.ilotterytea.box.BoxProperties;
 import kz.ilotterytea.box.models.FileDataModel;
 import kz.ilotterytea.box.models.ResponseModel;
+import kz.ilotterytea.box.utils.HashUtils;
 import kz.ilotterytea.box.utils.KeyUtils;
 import org.apache.tika.mime.MimeTypeException;
 import org.apache.tika.mime.MimeTypes;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.file.Files;
@@ -96,14 +98,15 @@ public class FileServerController {
         response.getOutputStream().write(Files.readAllBytes(file.toPath()));
     }
 
-    private FileDataModel processFile(MultipartFile file) {
+    private FileDataModel processFile(MultipartFile file, String url) {
         FileDataModel model = null;
 
         try {
             model = new FileDataModel(
                     KeyUtils.generateCharKey(properties.getChars(), properties.getDefaultIdLength()),
                     file.getContentType(),
-                    MimeTypes.getDefaultMimeTypes().forName(file.getContentType()).getExtension()
+                    MimeTypes.getDefaultMimeTypes().forName(file.getContentType()).getExtension(),
+                    file.getSize()
             );
         } catch (MimeTypeException e) {
             e.printStackTrace();
@@ -114,13 +117,18 @@ public class FileServerController {
             folder.mkdirs();
         }
 
+        File file1 = new File(String.format(
+                "%s/%s%s",
+                folder.getAbsolutePath(),
+                (model != null) ? model.getId() : file.getOriginalFilename(),
+                (model != null) ? model.getExt() : ""
+        ));
+
         try {
-            file.transferTo(new File(String.format(
-                    "%s/%s%s",
-                    folder.getAbsolutePath(),
-                    (model != null) ? model.getId() : file.getOriginalFilename(),
-                    (model != null) ? model.getExt() : ""
-            )));
+            file.transferTo(file1);
+
+            model.setSum(HashUtils.generateMD5Hash(file1));
+            model.setGet(url + model.getId() + model.getExt());
 
             folder = new File(properties.getDataPath());
             if (!folder.exists()) folder.mkdirs();
@@ -141,10 +149,10 @@ public class FileServerController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<FileDataModel[]> handleFileUpload(@RequestParam("file") MultipartFile[] files) {
+    public ResponseEntity<FileDataModel[]> handleFileUpload(@RequestParam("file") MultipartFile[] files, HttpServletRequest request) {
         FileDataModel[] models = new FileDataModel[files.length];
         for (int i = 0; i < files.length; i++) {
-            models[i] = processFile(files[i]);
+            models[i] = processFile(files[i], request.getRequestURL().toString().substring(0, request.getRequestURL().toString().length() - 6));
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(models);
