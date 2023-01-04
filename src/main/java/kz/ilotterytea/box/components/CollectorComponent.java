@@ -25,12 +25,14 @@ public class CollectorComponent {
     public CollectorComponent(BoxProperties properties) {
         this.properties = properties;
 
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                collectExpiredFiles();
-            }
-        }, 0, properties.getCollectExpiredFilesIntervalMs());
+        if (properties.getUseExpiredFilesCollector()) {
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    collectExpiredFiles();
+                }
+            }, 0, properties.getCollectExpiredFilesIntervalMs());
+        }
     }
 
     private void collectExpiredFiles() {

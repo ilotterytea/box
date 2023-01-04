@@ -19,10 +19,18 @@ public class BoxProperties {
     private String dataPath = "./data/file_records";
     /** The box name. */
     private String boxName = "Box";
-    /** Maximum time age (in milliseconds) of the file. */
+    /** Maximum time age (in milliseconds) of the file.
+     * @see kz.ilotterytea.box.components.CollectorComponent
+     */
     private long maxFileAgeMs = 43_200_000L;
-    /** Interval (in milliseconds) between collection of expired files. */
+    /** Interval (in milliseconds) between collection of expired files.
+     * @see kz.ilotterytea.box.components.CollectorComponent
+     */
     private long collectExpiredFilesIntervalMs = 43_200_000L;
+    /** Use the "expired files collector".
+     * @see kz.ilotterytea.box.components.CollectorComponent
+     */
+    private boolean useExpiredFilesCollector = true;
 
     public void setChars(String chars) { this.chars = chars; }
     public String getChars() { return chars; }
@@ -44,4 +52,7 @@ public class BoxProperties {
 
     public void setCollectExpiredFilesIntervalMs(long collectExpiredFilesIntervalMs) { this.collectExpiredFilesIntervalMs = collectExpiredFilesIntervalMs; }
     public long getCollectExpiredFilesIntervalMs() { return collectExpiredFilesIntervalMs; }
+
+    public void setUseExpiredFilesCollector(boolean useExpiredFilesCollector) { this.useExpiredFilesCollector = useExpiredFilesCollector; }
+    public boolean getUseExpiredFilesCollector() { return useExpiredFilesCollector; }
 }
