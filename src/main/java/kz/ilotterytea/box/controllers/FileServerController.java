@@ -80,7 +80,14 @@ public class FileServerController {
             throw new RuntimeException(e);
         }
 
-        File file = new File(String.format("%s/%s%s", folder.getAbsolutePath(), model.getId(), model.getExt()));
+        File file = new File(
+                String.format(
+                        "%s/%s%s",
+                        folder.getAbsolutePath(),
+                        (properties.getUseFileLinker()) ? model.getSum() : model.getId(),
+                        model.getExt()
+                )
+        );
 
         if (!file.exists()) {
             response.setStatus(404);
@@ -129,6 +136,16 @@ public class FileServerController {
 
             if (properties.getGenerateHashSum()) {
                 model.setSum(HashUtils.generateMD5Hash(file1));
+
+                if (properties.getUseFileLinker()) {
+                    file1.delete();
+                    file.transferTo(new File(String.format(
+                            "%s/%s%s",
+                            folder.getAbsolutePath(),
+                            (model != null) ? model.getSum() : file.getOriginalFilename(),
+                            (model != null) ? model.getExt() : ""
+                    )));
+                }
             } else {
                 model.setSum(null);
             }

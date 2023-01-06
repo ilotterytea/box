@@ -35,6 +35,8 @@ public class BoxProperties {
     private boolean generateDataFiles = true;
     /** Generate a hash summary of uploaded file. */
     private boolean generateHashSum = true;
+    /** Use the file linker. */
+    private boolean useFileLinker = true;
 
     public String getChars() { return chars; }
     public int getDefaultIdLength() { return defaultIdLength; }
@@ -46,4 +48,5 @@ public class BoxProperties {
     public boolean getUseExpiredFilesCollector() { return useExpiredFilesCollector; }
     public boolean getGenerateDataFiles() { return generateDataFiles; }
     public boolean getGenerateHashSum() { return generateHashSum; }
+    public boolean getUseFileLinker() { return useFileLinker; }
 }
