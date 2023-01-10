@@ -2,54 +2,65 @@
 <html xmlns:th="https://www.thymeleaf.org">
     <head>
         <title th:text="${title}" />
+        <link rel="stylesheet" href="css/style.css" />
     </head>
-    <style>
-        html {
-            font-family: monospace;
-        }
-
-        section {
-            padding: 4px 10px;
-            margin: 4px;
-        }
-
-        .content {
-            padding: 0 10px;
-        }
-    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://malsup.github.io/jquery.form.js"></script>
     <body>
-        <div class="container">
-            <div class="brand">
-                <h1 th:text="${title}" />
-                <h2>API USAGE</h2>
-                <hr>
+        <div class="container flex-center-column">
+            <div class="navbar flex-center-row">
+                <div class="buttons">
+                    <section class="brand">
+                        <h1 th:text="${title}" />
+                    </section>
+                    <section class="links">
+                        <a href="/" class="button" id="active">File upload</a>
+                    </section>
+                </div>
             </div>
-            <div class="content" id="web">
-                <h2>WEB</h2>
-                <section class="endpoint" id="get/">
-                    <h3>GET <a th:href="${web_url}">/web</a></h3>
-                    <p>
-                        Box client for the web browser.
-                    </p>
-                </section>
-            </div>
-            <div class="content" id="files">
-                <h2>FILES</h2>
-                <section class="endpoint" id="post/upload">
-                    <h3>POST /upload</h3>
-                    <p>
-                        Send the "multipart/form-data" form with files in "file" key.
-                        Returns a link to it and some data stored on server.
-                        <br>If the response code is 201 (CREATED), then the entire file was uploaded.
-                    </p>
-                </section>
-                <section class="endpoint" id="get/id">
-                    <h3>GET /&lt;id&gt;</h3>
-                    <p>
-                        Retrieve the file with the given ID.
-                    </p>
+            <div class="content flex-center-column">
+                <section class="uploadform">
+                    <form action="/upload" method="post" enctype="multipart/form-data" id="uploadform">
+                        <input type="file" accept="*" name="file" id="file" /><br>
+                        <button type="submit" id="uploadbtn" disabled="true">Upload</button>
+                    </form>
+                    <div class="link" id="linkblock" style="display: none;">
+                        <p id="link" onclick="window.getSelection().selectAllChildren(this);"></p>
+                        <button onclick="copy('link');">Copy</button>
+                    </div>
                 </section>
             </div>
         </div>
     </body>
+    <script>
+        let file = document.getElementById("file");
+
+        let uploadbtn = document.getElementById("uploadbtn");
+        let link_block = document.getElementById("linkblock");
+        let link = document.getElementById("link");
+
+        file.addEventListener("change", () => {
+            uploadbtn.disabled = false;
+        });
+
+        $("#uploadform").ajaxForm({
+            dataType: "json",
+            success: (response) => {
+                link_block.style.display = "flex";
+                link.innerHTML = response[0].get;
+            },
+            error: (res) => {
+                alert(`The server returned an error with status code ${res.status} (${res.statusText.toUpperCase()})!`);
+            }
+        });
+    </script>
+    <script>
+        function copy(id) {
+            navigator.clipboard.writeText(document.getElementById(id).innerHTML).then(() => {
+                alert("Copied to clipboard!");
+            }, (err) => {
+                alert("Something went wrong while copying to clipboard! " + err);
+            });
+        }
+    </script>
 </html>
