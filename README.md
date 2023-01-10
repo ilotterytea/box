@@ -20,7 +20,7 @@ git clone https://github.com/ilotterytea/box.git
 cd box
 ```
 2. The configuration file is located at [**src/main/resources/application.properties**]().
-   Edit it with your favorite text editor. [You can view the available configuration options here!](https://docs.ilotterytea.kz/box)
+   Edit it with your favorite text editor. [You can view the available configuration options here!](https://github.com/ilotterytea/box/wiki/Configuration)
 3. Start the application. The application runs on port 8080.
 ```shell
 ./gradlew bootRun
