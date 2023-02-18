@@ -3,6 +3,8 @@ extern crate rocket;
 
 use std::fs::create_dir_all;
 
+use rocket::fs::FileServer;
+
 mod file;
 mod handlers;
 
@@ -14,5 +16,7 @@ fn rocket() -> _ {
             e.to_string()
         )
     });
-    rocket::build().mount("/", routes![handlers::index, handlers::upload])
+    rocket::build()
+        .mount("/", routes![handlers::index, handlers::upload])
+        .mount("/", FileServer::from("./uploaded"))
 }
