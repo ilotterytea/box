@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>shitbox</title>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://malsup.github.io/jquery.form.js"></script>
+
+<body>
+  <div>
+    <h1>shitbox</h1>
+    <h3>super minimalistic service for image uploading!</h3>
+  </div>
+
+  <div>
+    <form action="/upload" method="post" enctype="multipart/form-data" id="uploadform">
+      <label for="file">Select a file to upload:</label>
+      <input type="file" name="file">
+      <button type="submit">Upload!</button>
+    </form>
+    <p style="display:none;" id="link"><b>The link to the file: <a href="#" id="linkid"></a></b></p>
+  </div>
+
+  <hr>
+
+  <div>
+    <div>
+      <h2>API USAGE</h2>
+    </div>
+
+    <ul>
+
+      <li>
+        <div>
+          <h3>GET / </h3>
+          <p>Get this page.</p>
+        </div>
+      </li>
+
+      <li>
+        <div>
+          <h3>GET /:id</h3>
+          <p>Retrieve the file with the given ID.</p>
+        </div>
+      </li>
+
+      <li>
+        <div>
+          <h3>POST /upload</h3>
+          <p>
+            Send the "multipart/form-data" form with a file in "file" key.
+            Returns a link to it and some data stored on server.
+            <br>If the response code is 201 (CREATED), then the entire file was uploaded.
+          </p>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</body>
+<script type="text/javascript">
+  let link = document.getElementById("link");
+  let link_id = document.getElementById("linkid");
+
+  $("#uploadform").ajaxForm({
+    dataType: "json",
+    success: (response) => {
+      link.style.display = "block";
+      link_id.href = response.get;
+      link_id.innerHTML = response.get;
+    },
+    error: (response) => {
+      alert("Something went wrong!");
+    }
+  });
+</script>
+
+</html>

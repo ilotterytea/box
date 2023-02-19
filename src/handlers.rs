@@ -3,12 +3,13 @@ use rocket::fs::TempFile;
 use rocket::http::Status;
 use rocket::response::status::Custom;
 use rocket::serde::json::Json;
+use rocket_dyn_templates::{context, Template};
 
 use crate::file::FileData;
 
 #[get("/")]
-pub fn index() -> &'static str {
-    "hello, my hateful world!"
+pub fn index() -> Template {
+    Template::render("index", context! {})
 }
 
 #[post("/upload", data = "<file>")]
