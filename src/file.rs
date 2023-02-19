@@ -1,5 +1,5 @@
 use crate::settings::{CHARS, HOST};
-use mime_guess::get_mime_extensions_str;
+use mime_guess;
 use rand::{self, Rng};
 use rocket::fs::TempFile;
 use rocket::serde::{Deserialize, Serialize};
@@ -9,6 +9,7 @@ use rocket::serde::{Deserialize, Serialize};
 pub struct FileData {
     pub id: String,
     pub mime: String,
+    pub ext: String,
     pub key: String,
     pub get: String,
 }
@@ -28,11 +29,14 @@ impl FileData {
         }
 
         let mime = &file.content_type().unwrap().to_string();
-        let get = String::from(format!("{}/{}", HOST, id));
+        let ext_vec = mime_guess::get_mime_extensions_str(&mime).unwrap();
+        let ext = ext_vec[0].to_string();
+        let get = String::from(format!("{}/{}.{}", HOST, id, ext));
 
         Self {
             id,
             mime: mime.to_owned(),
+            ext,
             key,
             get,
         }
