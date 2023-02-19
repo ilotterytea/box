@@ -9,7 +9,6 @@ use rocket::serde::{Deserialize, Serialize};
 pub struct FileData {
     pub id: String,
     pub mime: String,
-    pub ext: String,
     pub key: String,
     pub get: String,
 }
@@ -29,16 +28,11 @@ impl FileData {
         }
 
         let mime = &file.content_type().unwrap().to_string();
-        let ext_vec = get_mime_extensions_str(mime.as_ref()).unwrap();
-
-        let ext = ext_vec[ext_vec.len() - 1].to_string();
-
-        let get = String::from(format!("{}/{}.{}", HOST, id, ext));
+        let get = String::from(format!("{}/{}", HOST, id));
 
         Self {
             id,
             mime: mime.to_owned(),
-            ext,
             key,
             get,
         }
