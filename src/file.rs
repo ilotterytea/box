@@ -1,3 +1,4 @@
+use crate::settings::{CHARS, HOST};
 use mime_guess::get_mime_extensions_str;
 use rand::{self, Rng};
 use rocket::fs::TempFile;
@@ -10,9 +11,8 @@ pub struct FileData {
     pub mime: String,
     pub ext: String,
     pub key: String,
+    pub get: String,
 }
-
-const CHARS: &[u8] = b"0123456789-_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
 impl FileData {
     pub fn new(length: usize, file: &TempFile<'_>) -> Self {
@@ -33,11 +33,14 @@ impl FileData {
 
         let ext = ext_vec[ext_vec.len() - 1].to_string();
 
+        let get = String::from(format!("{}/{}.{}", HOST, id, ext));
+
         Self {
             id,
             mime: mime.to_owned(),
             ext,
             key,
+            get,
         }
     }
 }
