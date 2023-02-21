@@ -13,7 +13,9 @@ pub fn index() -> Template {
 }
 
 #[post("/upload", data = "<file>")]
-pub async fn upload(mut file: Form<TempFile<'_>>) -> Result<Json<FileData>, Custom<String>> {
+pub async fn upload(
+    mut file: Form<TempFile<'_>>,
+) -> Result<Custom<Json<FileData>>, Custom<String>> {
     let data = FileData::new(6, &file);
 
     file.copy_to(format!("./uploaded/{}.{}", data.id, data.ext))
@@ -21,5 +23,5 @@ pub async fn upload(mut file: Form<TempFile<'_>>) -> Result<Json<FileData>, Cust
         .map_err(|e| Custom(Status::InternalServerError, e.to_string()))
         .ok();
 
-    Ok(Json(data))
+    Ok(Custom(Status::Created, Json(data)))
 }
