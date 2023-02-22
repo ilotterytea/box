@@ -1,6 +1,10 @@
 [package]
-name = "litterbox"
-version = "0.1.0"
+name = "shitbox"
+version = "1.0.0"
+authors = ["ilotterytea <ilotterytea@pm.me>"]
+description = "Super small service for image uploading!"
+license = "Apache-2.0"
+keywords = ["fileserver", "image", "upload"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
