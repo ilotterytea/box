@@ -1,5 +1,6 @@
 package kz.ilotterytea.hashedpictures.utils;
 
+import kz.ilotterytea.hashedpictures.entities.File;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -13,6 +14,7 @@ public class HibernateUtil {
     private static SessionFactory generateSessionFactory() {
         return new Configuration()
                 .configure()
+                .addAnnotatedClass(File.class)
                 .buildSessionFactory();
     }
 
