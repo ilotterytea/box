@@ -1,4 +1,4 @@
-package kz.ilotterytea.hashedpictures.controller;
+package kz.ilotterytea.bin.controller;
 
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
@@ -7,10 +7,10 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.http.multipart.CompletedFileUpload;
-import kz.ilotterytea.hashedpictures.ApplicationProperties;
-import kz.ilotterytea.hashedpictures.entities.File;
-import kz.ilotterytea.hashedpictures.schemas.Payload;
-import kz.ilotterytea.hashedpictures.utils.HibernateUtil;
+import kz.ilotterytea.bin.ApplicationProperties;
+import kz.ilotterytea.bin.entities.File;
+import kz.ilotterytea.bin.schemas.Payload;
+import kz.ilotterytea.bin.utils.HibernateUtil;
 import org.hibernate.Session;
 
 import java.io.*;

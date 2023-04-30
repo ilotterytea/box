@@ -1,6 +1,6 @@
-package kz.ilotterytea.hashedpictures.utils;
+package kz.ilotterytea.bin.utils;
 
-import kz.ilotterytea.hashedpictures.entities.File;
+import kz.ilotterytea.bin.entities.File;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 

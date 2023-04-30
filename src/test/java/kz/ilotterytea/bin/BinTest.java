@@ -1,4 +1,4 @@
-package kz.ilotterytea.hashedpictures;
+package kz.ilotterytea.bin;
 
 import io.micronaut.runtime.EmbeddedApplication;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import jakarta.inject.Inject;
 
 @MicronautTest
-class HashedpicturesTest {
+class BinTest {
 
     @Inject
     EmbeddedApplication<?> application;

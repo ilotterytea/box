@@ -1,4 +1,4 @@
-package kz.ilotterytea.hashedpictures;
+package kz.ilotterytea.bin;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 

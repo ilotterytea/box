@@ -1,4 +1,4 @@
-package kz.ilotterytea.hashedpictures.schemas;
+package kz.ilotterytea.bin.schemas;
 
 /**
  * @author ilotterytea

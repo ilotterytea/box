@@ -1,4 +1,4 @@
-package kz.ilotterytea.hashedpictures;
+package kz.ilotterytea.bin;
 
 import io.micronaut.runtime.Micronaut;
 import io.swagger.v3.oas.annotations.*;
@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.info.*;
 
 @OpenAPIDefinition(
     info = @Info(
-            title = "Hashed pictures API",
+            title = "Bin API",
             version = "1.0"
     )
 )

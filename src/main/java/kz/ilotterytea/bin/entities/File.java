@@ -1,4 +1,4 @@
-package kz.ilotterytea.hashedpictures.entities;
+package kz.ilotterytea.bin.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
