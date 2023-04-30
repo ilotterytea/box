@@ -1,4 +1,8 @@
 micronaut:
+  server:
+    max-request-size: 104857600
+    multipart:
+      max-file-size: 104857600
   application:
     name: hashedpictures
   router:
